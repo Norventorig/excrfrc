@@ -80,7 +80,7 @@ TABLES_SQL = {
 }
 
 
-def load_to_sqlite() -> None:
+def main() -> None:
     """Создаёт таблицы и загружает в них данные из DataFrame."""
 
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -108,4 +108,4 @@ def load_to_sqlite() -> None:
 
 
 if __name__ == "__main__":
-    load_to_sqlite()
+    main()
