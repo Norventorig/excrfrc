@@ -89,7 +89,7 @@ def get_users() -> pd.DataFrame:
     users.rename(columns=USER_COLUMNS, inplace=True)
 
     users = users.reset_index(drop=True)
-    users["user_id"] = users.index
+    users["user_id"] = users.index + 1
 
     return users
 
@@ -100,7 +100,7 @@ def get_products() -> pd.DataFrame:
     products.rename(columns=PRODUCT_COLUMNS, inplace=True)
 
     products = products.reset_index(drop=True)
-    products["product_id"] = products.index
+    products["product_id"] = products.index + 1
 
     products["image"] = (products["image"].apply(
         lambda image_name: str(IMAGES_DIR / image_name))
@@ -196,7 +196,7 @@ def get_stocks() -> pd.DataFrame:
     )
     stocks = stocks.reset_index(drop=True)
 
-    stocks['stock_id'] = stocks.index
+    stocks['stock_id'] = stocks.index + 1
 
     return stocks
 
