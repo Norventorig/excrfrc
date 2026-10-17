@@ -106,6 +106,11 @@ def get_products() -> pd.DataFrame:
         lambda image_name: str(IMAGES_DIR / image_name))
     )
 
+    products.loc[
+        products["name"] == "Черные туфли в классическом стиле — база для деловых образов",
+        "name"
+    ] = "Черные туфли в классическом стиле"
+
     return products
 
 
