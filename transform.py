@@ -103,7 +103,7 @@ def get_products() -> pd.DataFrame:
     products["product_id"] = products.index
 
     products["image"] = (products["image"].apply(
-        lambda image_name: IMAGES_DIR / image_name)
+        lambda image_name: str(IMAGES_DIR / image_name))
     )
 
     return products
