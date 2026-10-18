@@ -7,7 +7,7 @@ import tempfile
 
 SEVEN_ZIP = Path(r"C:\Program Files\7-Zip\7z.exe")
 
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / "data"
 RAW_ARCHIVE_PATH = DATA_DIR / "source_raw.zip"
 RESULT_ARCHIVE_PATH = DATA_DIR / "result_archive.rar"

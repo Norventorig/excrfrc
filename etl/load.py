@@ -10,7 +10,8 @@ from transform import (
 )
 
 
-DB_PATH = Path(__file__).resolve().parent / "data" / "app.db"
+BASE_DIR = Path(__file__).resolve().parent.parent
+DB_PATH = BASE_DIR / "data" / "app.db"
 
 DATAFRAMES = {
     "products": get_products,
