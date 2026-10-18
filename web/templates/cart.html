@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Корзина — Чудо Обувь{% endblock %}
+{% block content %}
+<h1>Корзина</h1>
+{% if items %}
+<div class="table-wrap"><table>
+<thead><tr><th>Товар</th><th>Размер</th><th>Цена</th><th>Количество</th><th>Сумма</th><th></th></tr></thead>
+<tbody>
+{% for item in items %}
+<tr>
+  <td>{{ item.product['name'] }}</td>
+  <td>{{ item.product['size'] }}</td>
+  <td>{{ "{:,.0f}".format(item.product['price']).replace(",", " ") }} ₽</td>
+  <td><form class="inline-form" method="post" action="{{ url_for('update_cart') }}"><input type="hidden" name="key" value="{{ item.key }}"><input type="number" name="quantity" min="1" max="{{ item.product['available_amount'] }}" value="{{ item.quantity }}"><button class="small-button" type="submit">Обновить</button></form></td>
+  <td>{{ "{:,.0f}".format(item.item_total).replace(",", " ") }} ₽</td>
+  <td><form method="post" action="{{ url_for('remove_from_cart') }}"><input type="hidden" name="key" value="{{ item.key }}"><button class="danger-button" type="submit">Удалить</button></form></td>
+</tr>
+{% endfor %}
+</tbody>
+</table></div>
+<div class="cart-footer"><div class="total">Итого: {{ "{:,.0f}".format(total).replace(",", " ") }} ₽</div><form method="post" action="{{ url_for('checkout') }}"><button type="submit">Оформить заказ</button></form></div>
+{% else %}
+<div class="empty-state"><h2>Корзина пока пуста</h2><p>Добавьте обувь из каталога.</p><a class="button" href="{{ url_for('catalog') }}">Перейти в каталог</a></div>
+{% endif %}
+{% endblock %}

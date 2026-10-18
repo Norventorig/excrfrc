@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Каталог — Чудо Обувь{% endblock %}
+{% block content %}
+<section class="page-heading">
+  <div><p class="eyebrow">КОЛЛЕКЦИЯ</p><h1>Каталог обуви</h1><p class="muted">Выберите модель и доступный размер.</p></div>
+</section>
+<form class="filters" method="get">
+  <input type="search" name="q" placeholder="Поиск по названию..." value="{{ q }}">
+  <select name="category">
+    <option value="">Все категории</option>
+    {% for item in categories %}
+      <option value="{{ item['category'] }}" {% if selected_category == item['category'] %}selected{% endif %}>{{ item['category'] }}</option>
+    {% endfor %}
+  </select>
+  <input type="number" step="0.5" name="size" placeholder="Размер" value="{{ selected_size }}">
+  <select name="sort">
+    <option value="name" {% if sort == 'name' %}selected{% endif %}>По названию</option>
+    <option value="price_asc" {% if sort == 'price_asc' %}selected{% endif %}>Сначала дешевле</option>
+    <option value="price_desc" {% if sort == 'price_desc' %}selected{% endif %}>Сначала дороже</option>
+  </select>
+  <button type="submit">Применить</button>
+  <a class="button secondary" href="{{ url_for('catalog') }}">Сбросить</a>
+</form>
+
+{% if products %}
+<div class="product-grid">
+  {% for item in products %}
+  {% set product = item.product %}
+  <article class="product-card">
+    {% if product['image'] %}
+      {% if product['image'].startswith('http://') or product['image'].startswith('https://') %}
+        <img class="product-image" src="{{ product['image'] }}" alt="{{ product['name'] }}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
+      {% else %}
+        <img class="product-image" src="{{ url_for('product_image', path=product['image']) }}" alt="{{ product['name'] }}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
+      {% endif %}
+      <div class="image-placeholder" style="display:none">👟</div>
+    {% else %}
+      <div class="image-placeholder">👟</div>
+    {% endif %}
+    <div class="product-body">
+      <p class="eyebrow">{{ product['category'] }}{% if product['subcategory'] %} · {{ product['subcategory'] }}{% endif %}</p>
+      <h2>{{ product['name'] }}</h2>
+      <p class="muted small">{{ product['manufactory'] }}</p>
+      <p class="description">{{ product['description'] }}</p>
+      <p class="price">{{ "{:,.0f}".format(product['price']).replace(",", " ") }} ₽</p>
+      {% if item.sizes %}
+        {% if current_user %}
+        <form method="post" action="{{ url_for('add_to_cart') }}" class="add-form">
+          <input type="hidden" name="product_id" value="{{ product['product_id'] }}">
+          <select name="size" required aria-label="Размер">
+            {% for stock in item.sizes %}
+            <option value="{{ stock['size'] }}">{{ stock['size'] }} (осталось {{ stock['available_amount'] }})</option>
+            {% endfor %}
+          </select>
+          <input type="number" name="quantity" value="1" min="1" max="99" aria-label="Количество">
+          <button type="submit">В корзину</button>
+        </form>
+        {% else %}
+          <p class="muted small">Доступные размеры: {% for stock in item.sizes %}{{ stock['size'] }}{% if not loop.last %}, {% endif %}{% endfor %}</p>
+          <a class="button" href="{{ url_for('login') }}">Войти для заказа</a>
+        {% endif %}
+      {% else %}
+        <p class="muted">Нет в наличии</p>
+      {% endif %}
+    </div>
+  </article>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-state"><h2>Ничего не найдено</h2><p>Попробуйте изменить параметры поиска.</p></div>
+{% endif %}
+{% endblock %}

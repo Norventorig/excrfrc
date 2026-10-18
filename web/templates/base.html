@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="{{ url_for('site_icon') }}">
+  <title>{% block title %}Чудо Обувь{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="{{ url_for('catalog') }}"><img
+    src="{{ url_for('brand_icon') }}"
+    alt="Чудо Обувь"
+    class="brand-icon"
+> Чудо Обувь</a>
+  <nav>
+    <a href="{{ url_for('catalog') }}">Каталог</a>
+    {% if current_user %}
+      <a href="{{ url_for('cart') }}">Корзина</a>
+      <a href="{{ url_for('orders') }}">Заказы</a>
+      <span class="user-label">{{ current_user['login'] }} · {{ current_user['role'] }}</span>
+      <a href="{{ url_for('logout') }}">Выйти</a>
+    {% else %}
+      <a href="{{ url_for('login') }}">Войти</a>
+    {% endif %}
+  </nav>
+</header>
+<main class="container">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="messages">
+      {% for category, message in messages %}
+        <div class="message {{ category }}">{{ message }}</div>
+      {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</main>
+<footer>Чудо Обувь · Учебный веб-сервис</footer>
+</body>
+</html>

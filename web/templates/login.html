@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Вход — Чудо Обувь{% endblock %}
+{% block content %}
+<div class="form-card login-card">
+  <p class="eyebrow">ДОБРО ПОЖАЛОВАТЬ</p>
+  <h1>Вход в систему</h1>
+  <p class="muted">Введите логин, который есть в списке пользователей.</p>
+  <form method="post" class="stack-form">
+    <label for="login">Логин</label>
+    <input id="login" name="login" autocomplete="username" required autofocus>
+    <button type="submit">Войти</button>
+  </form>
+  <p class="small muted">По условиям учебного задания пароль не используется.</p>
+</div>
+{% endblock %}
